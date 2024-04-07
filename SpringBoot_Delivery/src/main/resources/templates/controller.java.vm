@@ -1,0 +1,125 @@
+package ${package.Controller};
+
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import cn.hutool.poi.excel.ExcelReader;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.web.bind.annotation.*;
+import javax.annotation.Resource;
+import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.robot_server.springboot_delivery.common.Result;
+
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Resource
+    private ${table.serviceName} ${table.entityPath}Service;
+
+    @PostMapping
+    public boolean insert(@RequestBody ${entity} ${table.entityPath}) {
+        return ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable int id) {
+        return ${table.entityPath}Service.removeById(id);
+    }
+
+    @GetMapping
+    public List<${entity}> findAll() {
+        return ${table.entityPath}Service.list();
+    }
+
+    @GetMapping("/page") //分页查询 mybatis-plus
+    public IPage<${entity}> findPage(@RequestParam int pageNum,
+                                @RequestParam int pageSize,) {
+
+        IPage<${entity}> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<$entity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        return ${table.entityPath}Service.page(page, queryWrapper);
+    }
+
+    @DeleteMapping ("/del/batch")
+    public boolean deleteBatch(@RequestBody List<Integer> ids) {
+        return ${table.entityPath}Service.removeByIds(ids);
+    }
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) throws Exception {
+        //从数据库查询出所有数据
+        List<${entity}> list = ${table.entityPath}Service.list();
+
+        ExcelWriter writer = ExcelUtil.getWriter(true);
+
+        //对象写入excel，并输出标题
+        writer.write(list, true);
+
+        //设置浏览器相应的格式
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        String fileName = URLEncoder.encode("导出信息", "UTF-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+
+        ServletOutputStream out = response.getOutputStream();
+        writer.flush(out, true);
+        out.close();
+        writer.close();
+    }
+
+//导入
+    @PostMapping("/import")
+    public boolean imp(MultipartFile file) throws Exception {
+        InputStream inputStream = file.getInputStream();
+        ExcelReader reader = ExcelUtil.getReader(inputStream);
+        List<${entity}> list = reader.readAll(${entity}.class);
+        return ${table.entityPath}Service.saveBatch(list);
+    }
+}
+
+#end

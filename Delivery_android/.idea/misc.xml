@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/drawable/dialogstyle.xml" value="0.135" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1205" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/activity_camare_xactivity.xml" value="0.24947916666666667" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/activity_test.xml" value="0.24947916666666667" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/camera_x_layout.xml" value="0.23489583333333333" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/camerax_layout.xml" value="0.23489583333333333" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/fragment_camera_x.xml" value="0.23489583333333333" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/layout/order_layout.xml" value="0.24947916666666667" />
+        <entry key="..\:/android/MyApplication/Delivery/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.135" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
+</project>
